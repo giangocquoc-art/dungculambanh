@@ -96,10 +96,23 @@ export function ProductDetailView({ slug }: { slug: string }) {
 
       <div className="grid gap-8 md:grid-cols-2">
         {/* Hình */}
-        <div className="grid aspect-square place-items-center overflow-hidden rounded-2xl bg-gradient-to-br from-primary/15 via-secondary to-primary/8">
-          <span className="select-none text-9xl font-extrabold text-primary/60">
-            {initials}
-          </span>
+        <div className="relative aspect-square overflow-hidden rounded-2xl border border-border bg-secondary">
+          {product.image ? (
+            <img
+              src={product.image}
+              alt={product.name}
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <div className="grid h-full place-items-center bg-gradient-to-br from-primary/15 to-secondary text-9xl font-extrabold text-primary/60">
+              {initials}
+            </div>
+          )}
+          {product.featured && (
+            <span className="absolute left-4 top-4 rounded-full btn-gold px-3 py-1 text-xs font-bold uppercase tracking-wide text-primary-foreground">
+              Bán chạy
+            </span>
+          )}
         </div>
 
         {/* Thông tin */}

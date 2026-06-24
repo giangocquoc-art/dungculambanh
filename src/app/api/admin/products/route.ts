@@ -15,7 +15,7 @@ const slugify = (s: string) =>
 export const POST = apiHandler(async (req) => {
   await requireAdmin();
   const body = await req.json();
-  const { name, category, description, priceMin, priceMax, stock, featured } = body;
+  const { name, category, description, priceMin, priceMax, stock, featured, image } = body;
   if (!name || !category || !description) {
     throw new ResponseError(400, "Vui lòng nhập tên, danh mục và mô tả.");
   }
@@ -36,6 +36,7 @@ export const POST = apiHandler(async (req) => {
       priceMax: pmax,
       stock: Math.max(0, Math.floor(Number(stock) || 0)),
       featured: Boolean(featured),
+      image: image ? String(image) : null,
     },
   });
   return Response.json({ product }, { status: 201 });

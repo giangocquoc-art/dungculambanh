@@ -7,7 +7,7 @@ export const PUT = apiHandler(async (req, { params }: { params: Promise<{ id: st
   await requireAdmin();
   const { id } = await params;
   const body = await req.json();
-  const { name, category, description, priceMin, priceMax, stock, featured } = body;
+  const { name, category, description, priceMin, priceMax, stock, featured, image } = body;
 
   const existing = await db.product.findUnique({ where: { id } });
   if (!existing) throw new ResponseError(404, "Không tìm thấy sản phẩm.");
@@ -28,6 +28,7 @@ export const PUT = apiHandler(async (req, { params }: { params: Promise<{ id: st
       ...(pmax !== undefined && { priceMax: pmax }),
       ...(stock !== undefined && { stock: Math.max(0, Math.floor(Number(stock) || 0)) }),
       ...(featured !== undefined && { featured: Boolean(featured) }),
+      ...(image !== undefined && { image: image ? String(image) : null }),
     },
   });
   return Response.json({ product });

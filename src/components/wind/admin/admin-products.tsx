@@ -106,9 +106,17 @@ export function AdminProducts() {
                   <tr key={p.id} className="border-t border-border">
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
-                        <div className="grid h-10 w-10 shrink-0 place-items-center rounded-md bg-primary/15 text-xs font-bold text-primary">
-                          {p.name.replace(/[^\p{L}\s]/gu, "").trim().slice(0, 2).toUpperCase()}
-                        </div>
+                        {p.image ? (
+                          <img
+                            src={p.image}
+                            alt={p.name}
+                            className="h-10 w-10 shrink-0 rounded-md object-cover ring-1 ring-border"
+                          />
+                        ) : (
+                          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-md bg-primary/15 text-xs font-bold text-primary">
+                            {p.name.replace(/[^\p{L}\s]/gu, "").trim().slice(0, 2).toUpperCase()}
+                          </div>
+                        )}
                         <span className="line-clamp-2 max-w-xs font-medium">{p.name}</span>
                       </div>
                     </td>
@@ -183,6 +191,7 @@ function ProductForm({
     priceMax: product ? String(product.priceMax) : "",
     stock: product ? String(product.stock) : "0",
     featured: product?.featured || false,
+    image: product?.image || "",
   });
   const [saving, setSaving] = useState(false);
 
@@ -198,6 +207,7 @@ function ProductForm({
         priceMax: Number(form.priceMax) || Number(form.priceMin),
         stock: Number(form.stock),
         featured: form.featured,
+        image: form.image || null,
       };
       const res = product
         ? await fetch(`/api/admin/products/${product.id}`, {
@@ -246,6 +256,12 @@ function ProductForm({
           <L label="Mô tả">
             <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} required className="input min-h-[80px] resize-y" />
           </L>
+          <L label="Đường dẫn ảnh (vd: /images/products/p01.jpg)">
+            <input value={form.image} onChange={(e) => setForm({ ...form, image: e.target.value })} placeholder="/images/products/p01.jpg" className="input" />
+          </L>
+          {form.image && (
+            <img src={form.image} alt="preview" className="h-24 w-24 rounded-lg object-cover ring-1 ring-border" />
+          )}
           <div className="grid grid-cols-2 gap-3">
             <L label="Giá thấp nhất (VNĐ)">
               <input type="number" min={0} value={form.priceMin} onChange={(e) => setForm({ ...form, priceMin: e.target.value })} required className="input" />

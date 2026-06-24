@@ -37,6 +37,7 @@ model Product {
   priceMax    Int // giá cao nhất (VNĐ); bằng priceMin nếu 1 mức giá
   stock       Int     @default(0)
   featured    Boolean @default(false)
+  image       String? // đường dẫn ảnh sản phẩm (relative path trong /public)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
