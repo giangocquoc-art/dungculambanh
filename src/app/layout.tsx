@@ -1,48 +1,36 @@
 import type { Metadata } from "next";
-import { Inter, Instrument_Serif } from "next/font/google";
+import { Be_Vietnam_Pro } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
-const instrumentSerif = Instrument_Serif({
-  variable: "--font-instrument-serif",
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal", "italic"],
+// Font Be Vietnam Pro — hỗ trợ tiếng Việt tốt
+const beVietnam = Be_Vietnam_Pro({
+  variable: "--font-be-vietnam",
+  subsets: ["latin", "vietnamese"],
+  weight: ["400", "500", "600", "700", "800"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Mindloop — Get Inspired with Us",
+  title: "Wind Baking Tool — Cửa hàng dụng cụ làm bánh",
   description:
-    "Mindloop is a newsletter and content platform where curiosity meets clarity. Join 7,000+ readers for meaningful updates, news around technology, and a shared journey toward depth and direction.",
+    "Wind Baking Tool (Wind Store) chuyên cung cấp khuôn khay nướng bánh, dụng cụ làm bánh, dụng cụ trang trí bánh, bao bì ngành bánh. Đặt trực tiếp trên web nhận giá ưu đãi, phí ship toàn quốc 30.000đ/đơn, thanh toán khi nhận hàng.",
   keywords: [
-    "Mindloop",
-    "newsletter",
-    "content platform",
-    "technology",
-    "writing",
-    "community",
+    "dụng cụ làm bánh",
+    "khuôn bánh",
+    "khuôn silicone",
+    "bao bì bánh",
+    "Wind Baking Tool",
+    "Wind Store",
+    "dụng cụ làm bếp",
   ],
-  authors: [{ name: "Mindloop" }],
+  authors: [{ name: "Wind Baking Tool" }],
   openGraph: {
-    title: "Mindloop — Get Inspired with Us",
+    title: "Wind Baking Tool — Cửa hàng dụng cụ làm bánh",
     description:
-      "A newsletter and content platform where curiosity meets clarity. Join 7,000+ readers.",
-    siteName: "Mindloop",
+      "Khuôn khay nướng bánh, dụng cụ làm bánh, trang trí bánh, bao bì ngành bánh. Ship toàn quốc 30.000đ/đơn.",
+    siteName: "Wind Baking Tool",
     type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Mindloop — Get Inspired with Us",
-    description:
-      "A newsletter and content platform where curiosity meets clarity.",
   },
 };
 
@@ -52,10 +40,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
-      <body
-        className={`${inter.variable} ${instrumentSerif.variable} font-sans antialiased bg-background text-foreground`}
-      >
+    <html lang="vi">
+      <body className={`${beVietnam.variable} font-sans antialiased bg-background text-foreground`}>
         {children}
         <Toaster />
       </body>

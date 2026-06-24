@@ -1,8 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// Prisma schema — Wind Baking Tool
+// Phân quyền rõ ràng: User.role = USER | ADMIN
 
 generator client {
   provider = "prisma-client-js"
@@ -13,20 +10,68 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// ===== NGƯỜI DÙNG =====
+// role là trường phân quyền cốt lõi: USER (khách hàng) | ADMIN (quản trị)
 model User {
   id        String   @id @default(cuid())
   email     String   @unique
-  name      String?
+  name      String
+  phone     String?
+  address   String?
+  password  String // đã băm (bcrypt)
+  role      String   @default("USER") // "USER" | "ADMIN"
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  orders Order[]
 }
 
-model Post {
-  id        String   @id @default(cuid())
-  title     String
-  content   String?
-  published Boolean  @default(false)
-  authorId  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+// ===== SẢN PHẨM =====
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String
+  category    String // danh mục (KHUÔN NƯỚNG, KHUÔN SILICONE, ...)
+  priceMin    Int // giá thấp nhất (VNĐ)
+  priceMax    Int // giá cao nhất (VNĐ); bằng priceMin nếu 1 mức giá
+  stock       Int     @default(0)
+  featured    Boolean @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  orderItems OrderItem[]
+}
+
+// ===== ĐƠN HÀNG =====
+// status: PENDING (chờ duyệt) | APPROVED (đã duyệt) | REJECTED (từ chối) | COMPLETED (hoàn thành)
+model Order {
+  id           String   @id @default(cuid())
+  code         String   @unique // mã đơn hiển thị, ví dụ WIND-0001
+  userId       String
+  customerName String
+  customerPhone String
+  customerAddress String
+  note         String?
+  total        Int // tổng tiền (VNĐ)
+  shipFee      Int @default(30000) // phí ship cố định 30.000đ/đơn
+  status       String   @default("PENDING") // PENDING | APPROVED | REJECTED | COMPLETED
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user       User       @relation(fields: [userId], references: [id])
+  orderItems OrderItem[]
+}
+
+// ===== CHI TIẾT ĐƠN HÀNG =====
+model OrderItem {
+  id        String @id @default(cuid())
+  orderId   String
+  productId String
+  productName String // snapshot tên sản phẩm lúc đặt
+  unitPrice Int // đơn giá lúc đặt (lấy priceMin)
+  quantity  Int
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
 }
