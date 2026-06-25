@@ -74,7 +74,7 @@ export function StoreFooter() {
             © {new Date().getFullYear()} Wind Baking Tool. All rights reserved.
           </p>
           <p className="text-xs text-muted-foreground">
-            Dữ liệu tham khảo từ windbakingtool.com
+            Website được tạo ra bởi PShareHub.com
           </p>
         </div>
       </div>
